@@ -1,0 +1,17 @@
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+###
+POST http://localhost:3000/login/token
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin",
+  "token": "valid-token"
+}
