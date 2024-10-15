@@ -1,5 +1,5 @@
-import { AuthService } from "./auth.service";
-import { TokenAuthService } from "./token-auth.service";
+import { AuthService } from "../services/auth.service";
+import { TokenAuthService } from "../services/token-auth.service";
 
 describe('Testing LSP principle for Auth Services', () => {
   it("AuthService should authenticate valid credentials", async () => {

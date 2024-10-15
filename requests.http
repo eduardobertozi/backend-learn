@@ -3,8 +3,8 @@ Content-Type: application/json
 
 {
   "username": "admin",
-  "password": "admin",
-  "token": "valid-token"
+  "token": "invalid-token"
 }
 
 # "token": "valid-token"
+# "password": "admin",
