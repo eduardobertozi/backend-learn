@@ -6,6 +6,6 @@ export class ResponseHandler {
   }
 
   static error(reply: FastifyReply, message: string = 'error', statusCode: number = 500) {
-    reply.status(statusCode).send({ sucess: false, message })
+    reply.status(statusCode).send({ success: false, message })
   }
 }
