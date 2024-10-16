@@ -5,9 +5,9 @@ import { ResponseHandler } from "@/util/response-handler";
 export function authorize(allowedRoles: Role[]) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     const user = request.user as User
-
-    if (!allowedRoles.includes(user.role)) {
-      ResponseHandler.error(reply, 'Forbidden', 403)
+    
+    if (!user || !allowedRoles.includes(user.role)) {
+      reply.status(403).send({ success: false, message: 'Forbidden' })
       return
     }
   }

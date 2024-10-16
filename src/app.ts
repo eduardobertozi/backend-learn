@@ -1,9 +1,14 @@
 import Fastify from "fastify";
-import { authRoutes } from "@/routes/auth.route"
+import { userPlugin } from "@/plugins/user";
+import { authRoutes } from "@/routes/auth.route";
+import { protectedRoutes } from "@/routes/protected.route";
 
-const app = Fastify();
+const app = Fastify()
 
-app.register(authRoutes);
+app.register(userPlugin)
+
+app.register(authRoutes)
+app.register(protectedRoutes)
 
 app.listen({
   port: 3000,
