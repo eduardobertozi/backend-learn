@@ -1,4 +1,4 @@
 export interface ITokenService {
-  generateToken(userId: string): string
-  verifyToken(token: string): boolean
+  generateToken(payload: object): string
+  verifyToken(token: string): object | string
 }

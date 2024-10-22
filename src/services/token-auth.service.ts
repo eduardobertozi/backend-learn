@@ -1,12 +1,17 @@
-import { IAuthService } from "@/interfaces/auth.service";
+import jwt from 'jsonwebtoken'
+import { ITokenService } from "@/interfaces/token.service"
 
-export type TokenAuthParams = {
-  username: string
-  token: string
-}
+export class TokenAuthService implements ITokenService {  
+  constructor(
+    private secretKey: string,
+    private expirationTime: string
+  ) {}
+  
+  generateToken(payload: object): string {
+    return jwt.sign(payload, this.secretKey, { expiresIn: this.expirationTime })
+  }
 
-export class TokenAuthService implements IAuthService {
-  async authenticate(params: TokenAuthParams): Promise<boolean> {
-    return params.token === 'valid-token'
+  verifyToken(token: string): object | string {
+    return jwt.verify(token, this.secretKey)
   }
 }
