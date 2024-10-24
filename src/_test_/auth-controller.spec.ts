@@ -1,7 +1,6 @@
 import { AuthController } from "@/controllers/auth.controller";
 import { FastifyReply } from "fastify";
 import { vi } from "vitest";
-import { AuthService } from "@/services/auth.service";
 
 describe("AuthController", () => {
   let statusCode: number | undefined
@@ -19,8 +18,8 @@ describe("AuthController", () => {
   } as unknown as FastifyReply
 
   const authServiceMock = {
-    authenticate: vi.fn().mockResolvedValue(true)
-  } as unknown as AuthService
+    authenticate: vi.fn()
+  }
 
   beforeEach(() => {
     statusCode = undefined
@@ -29,6 +28,8 @@ describe("AuthController", () => {
   })
 
   it('Should authenticate with valid credentials', async () => {
+    authServiceMock.authenticate.mockResolvedValue(true)
+    
     const controller = new AuthController(authServiceMock)
     const request = {
       body: { username: 'validUser', password: 'validPassword' }
@@ -45,13 +46,13 @@ describe("AuthController", () => {
   })
 
   it('Should reject authentication with invalid token', async () => {
+    authServiceMock.authenticate.mockResolvedValue(false)
     const controller = new AuthController(authServiceMock)
     const request = {
       body: { username: 'invalidUser', password: 'invalidPassword' }
     } as any
 
-    const response = await controller.login(request, reply)
-    console.log(response)
+    await controller.login(request, reply)
 
     expect(statusCode).toBe(401)
     expect(responsePayload).toEqual({
