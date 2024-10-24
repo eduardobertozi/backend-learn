@@ -11,16 +11,14 @@ type AuthLoginRequest = {
 export class AuthController {
   constructor(
     private authService: IAuthService,
-    private tokenAuthService: IAuthService,
   ) {}
 
   async login(request: FastifyRequest, reply: FastifyReply) {
     const body = request.body as AuthLoginRequest
     
     try {
-      const isAuthenticated = body.token
-        ? await this.tokenAuthService.authenticate({ username: body.username, token: body.token })
-        : await this.authService.authenticate({ username: body.username, password: body.password })
+      const isAuthenticated = await this.authService
+        .authenticate({ username: body.username, password: body.password })
 
       if (!isAuthenticated) {
         return ResponseHandler.error(reply, 'Unauthorized', 401)

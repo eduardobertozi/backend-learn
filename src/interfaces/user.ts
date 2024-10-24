@@ -7,6 +7,6 @@ export interface User {
   role: Role
 }
 
-export interface IUserRepository {
+export interface UserRepository {
   findUser(username: string, password: string): Promise<User | null>
 }

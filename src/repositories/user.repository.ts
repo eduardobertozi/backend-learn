@@ -1,6 +1,6 @@
-import { User, IUserRepository } from "@/interfaces/user";
+import { User, UserRepository } from "@/interfaces/user";
 
-export class InMemoryUserRepository implements IUserRepository {
+export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [
     { username: 'validUser', password: 'validPassword', role: 'user' },
     { username: 'adminUser', password: 'adminPassword', role: 'admin' },

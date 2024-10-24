@@ -1,15 +1,11 @@
-import { User } from "@/interfaces/user";
+import { User, UserRepository } from "@/interfaces/user";
 
 export class UserService {
-  private users: User[] = [
-    { username: 'validUser', password: 'validPassword', role: 'user' },
-    { username: 'adminUser', password: 'adminPassword', role: 'admin' },
-  ]
+  constructor(
+    private userRepository: UserRepository
+  ) {}
 
   async findUser(username: string, password: string): Promise<User | null> {
-    const user = this.users
-      .find(user => user.username === username && user.password === password)
-    
-    return user ? user : null
+    return this.userRepository.findUser(username, password)
   }
 }
