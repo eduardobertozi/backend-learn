@@ -2,8 +2,8 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "token": "invalid-token"
+  "username": "validUser",
+  "password": "validPassword"
 }
 
 # "token": "valid-token"

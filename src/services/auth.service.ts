@@ -9,21 +9,21 @@ export class AuthService implements IAuthService {
     private tokenAuthService: TokenAuthService
   ) {}  
   
-  async authenticate(params: { username: string, password: string }): Promise<User> {
+  async authenticate(params: { username: string, password: string }): Promise<User | null> {
     const user = await this.userService.findUser(params.username, params.password)
     
     if (!user) {
-      throw new Error('Invalid credentials')
+      return null
     }
 
     return user
   }
 
-  async getToken(user: User) {
+  generateToken(user: User): string {
     return this.tokenAuthService.generateToken({
       id: user.id,
       username: user.username,
-      role: user.role
+      role: user.role,
     })
   }
 }

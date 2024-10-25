@@ -20,16 +20,15 @@ export class AuthController {
       const isAuthenticated = await this.authService
         .authenticate({ username: body.username, password: body.password })
 
-      console.log(isAuthenticated)
-
       if (!isAuthenticated) {
         return ResponseHandler.error(reply, 'Unauthorized', 401)
       }
 
-      const token = this.authService.getToken(isAuthenticated)
+      const token = this.authService.generateToken(isAuthenticated)
 
-      return ResponseHandler.success(reply, 'Login successful', { token })  
+      return ResponseHandler.success(reply, 'Login successful', { token }) 
     } catch (err) {
+      console.log(err)
       ResponseHandler.error(reply, 'Internal Server Error', 500)
     }
   }
