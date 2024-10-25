@@ -7,11 +7,15 @@ import swaggerUi from "@fastify/swagger-ui";
 import rateLimit from "@fastify/rate-limit";
 import helmet from "@fastify/helmet";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import { errorHandler } from "./middlewares/error-handler";
 
 const app = Fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+/* Error handling */
+app.setErrorHandler(errorHandler)
 
 /* Security */
 app.register(rateLimit, {
