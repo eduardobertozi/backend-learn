@@ -3,8 +3,8 @@ import { ITokenService } from "@/interfaces/token.service"
 
 export class TokenAuthService implements ITokenService {  
   constructor(
-    private secretKey: string,
-    private expirationTime: string
+    private secretKey: string = 'my-secret-key',
+    private expirationTime: string = '1d'
   ) {}
   
   generateToken(payload: object): string {

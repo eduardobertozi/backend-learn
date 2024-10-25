@@ -1,6 +1,7 @@
 import { IAuthService } from "@/interfaces/auth.service";
 import { UserService } from "./user.service";
 import { TokenAuthService } from "./token-auth.service";
+import { User } from "@/interfaces/user";
 
 export class AuthService implements IAuthService {
   constructor(
@@ -8,17 +9,21 @@ export class AuthService implements IAuthService {
     private tokenAuthService: TokenAuthService
   ) {}  
   
-  async authenticate(params: { username: string, password: string }): Promise<string> {
+  async authenticate(params: { username: string, password: string }): Promise<User> {
     const user = await this.userService.findUser(params.username, params.password)
     
     if (!user) {
       throw new Error('Invalid credentials')
     }
 
-    const token = this.tokenAuthService.generateToken({
-      username: user.username, role: user.role
-    })
+    return user
+  }
 
-    return token
+  async getToken(user: User) {
+    return this.tokenAuthService.generateToken({
+      id: user.id,
+      username: user.username,
+      role: user.role
+    })
   }
 }
