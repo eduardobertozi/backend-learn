@@ -1,9 +1,23 @@
 import { FastifyInstance } from "fastify";
 import { authorize } from "@/middlewares/authorize";
 import { ResponseHandler } from "@/util/response-handler";
+import { z } from "zod";
 
 export async function protectedRoutes(fastify: FastifyInstance) {
-  fastify.get('/admin', { preHandler: authorize(['admin']) }, async (request, reply) => {
+  const protectedRouteSchema = z.object({
+    authorization: z.string({
+      required_error: 'Authorization header missing',
+    }).min(1, {
+      message: 'Please provide a valid token',
+    }),
+  })
+  
+  fastify.get('/admin', { 
+    schema: {
+      headers: protectedRouteSchema
+    },
+    preHandler: authorize(['admin']) 
+  }, async (request, reply) => {
     ResponseHandler.success(
       reply, 
       'Access granted for admin', 
@@ -12,7 +26,12 @@ export async function protectedRoutes(fastify: FastifyInstance) {
     })
   })
 
-  fastify.get('/user', { preHandler: authorize(['user']) }, async (request, reply) => {
+  fastify.get('/user', { 
+    schema: {
+      headers: protectedRouteSchema
+    },
+    preHandler: authorize(['user']) 
+  }, async (request, reply) => {
     ResponseHandler.success(
       reply, 
       'Access granted for user', 

@@ -6,8 +6,12 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import rateLimit from "@fastify/rate-limit";
 import helmet from "@fastify/helmet";
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 
-const app = Fastify()
+const app = Fastify().withTypeProvider<ZodTypeProvider>()
+
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
 /* Security */
 app.register(rateLimit, {
@@ -32,6 +36,16 @@ app.register(swagger, {
       description: 'Documentação da API',
       version: '1.0.0',
     },
+    components: {
+      securitySchemes: {
+        Bearer: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      },
+    },
+    security: [{ Bearer: [] }],
     servers: [{ url: 'http://localhost:3000' }],
   }
 })
@@ -48,8 +62,10 @@ app.register(swaggerUi, {
 app.register(userPlugin)
 
 /* Routes */
-app.register(authRoutes)
-app.register(protectedRoutes)
+app.after(() => {
+  app.register(authRoutes)
+  app.register(protectedRoutes)
+})
 
 /* Start Server */
 app.listen({
