@@ -1,10 +1,11 @@
 // plugins/user.ts
+import { User } from '@/interfaces/user';
 import { FastifyInstance, FastifyRequest } from 'fastify';
-import { User } from '../types';
+
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user?: User;
+    user?: Partial<User>;
   }
 }
 
